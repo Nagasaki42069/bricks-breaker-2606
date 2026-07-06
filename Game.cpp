@@ -27,7 +27,7 @@ void Game::Reset()
 		Box bric;
 		bric.width = 10;
 		bric.height = 2;
-		bric.x_position = i * 12;   // temp spacing!
+		bric.x_position = i * 12;   // temp spacing ig worked lmao
 		bric.y_position = 5;
 		bric.doubleThick = true;
 		bric.color = ConsoleColor::DarkGreen;
@@ -88,19 +88,32 @@ void Game::Render() const
 void Game::CheckCollision()
 {
 	// TODO #4 - Update collision to check all bricks
-	for (Box& bric : brick)
+	for (std::vector<Box>::iterator it = brick.begin(); it != brick.end(); ) // switched from barebone check bout bric to a full iterator for the check! should work lmao
 	{
-		if (bric.Contains(ball.x_position + ball.x_velocity,
+		if (it->Contains(ball.x_position + ball.x_velocity,
 			ball.y_position + ball.y_velocity))
 		{
-			bric.color = ConsoleColor(bric.color - 1);
+			it->color = ConsoleColor(it->color - 1);
 			ball.y_velocity *= -1;
 
 			// TODO #5 - If the ball hits the same brick 3 times (color == black), remove it from the vector
+			if (it->color == ConsoleColor::Black)
+			{
+				it = brick.erase(it);
+			}
+			else
+			{
+				it++;
+			}
 
 			break;
 		}
-	}
+		else
+		{
+			it++;
+		}
+			break;
+		}
 	// TODO #6 - If no bricks remain, pause ball and display (render) victory text with R to reset
 
 
