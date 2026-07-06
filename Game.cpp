@@ -81,7 +81,11 @@ void Game::Render() const
 	{
 		bric.Draw();
 	}
-
+	if (brick.empty()) // TODO #6 lol
+	{
+		Console::SetCursorPosition((WINDOW_WIDTH / 2) - 15, WINDOW_HEIGHT / 2);
+		std::cout << "You win! Press 'R' to play again."; //wtf? japanese keyboard had me messed up lmao
+	}
 	Console::Lock(false);
 }
 
@@ -112,10 +116,13 @@ void Game::CheckCollision()
 		{
 			it++;
 		}
-			break;
-		}
+	}
 	// TODO #6 - If no bricks remain, pause ball and display (render) victory text with R to reset
 
+	if (brick.empty())
+	{
+		ball.moving = false;
+	}
 
 	if (paddle.Contains(ball.x_position + ball.x_velocity, ball.y_velocity + ball.y_position))
 	{
